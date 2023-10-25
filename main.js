@@ -1,11 +1,12 @@
+
 const app = Vue.createApp({
     
     
     data() {
         return {
-            href: "https://www.google.com",
-            inStock: false,
-            cart: 0,
+            cartPage: false,
+            checkoutPage: false,
+            cart: [],
             lessons: [
                 {
                     "id": 1,
@@ -203,21 +204,30 @@ const app = Vue.createApp({
         }
     },
     methods: {
-        async getLessons() {
-            let res = await fetch('lessons.json')
-            let data = await res.json()
-
-            this.lessons = data
-            return this.lessons
-        },
         addToCart(lesson) {
-            this.cart += 1;
+            lesson.spaces -= 1
+            if(lesson.spaces < 0) {
+                lesson.spaces = 0;
+            } else {
+                this.cart.push(lesson)
+            }
         },
-        removeFromCart() {
-            this.cart -= 1;
+        removeFromCart(lesson) {
+            this.cart.splice(this.cart.indexOf(lesson), 1)
+            ++lesson.spaces
         },
         clearCart() {
-            this.cart = 0;
+            this.cart = [];
+            this.checkoutPage = false;
+            this.cartPage = false;
+        },
+        changeToCartPage() {
+            this.cartPage = !this.cartPage;
+            this.checkoutPage = false;
+        },
+        changeToCheckoutPage() {
+            this.checkoutPage = !this.checkoutPage;
+            this.cartPage = false;
         }
     },
 })
