@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking App</title>
+    <!-- Bootstrap Css Cdn -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    
+    <!-- Font Awesome Cdn -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css" integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <!-- Bootstrap Js Cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+    
+    <!-- VueJS Cdn -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+<body>
+    <div id="app" class="container-fluid">
+        <h1>Book Available Lessons</h1>
+        
+        
+        
+        <div class="container-fluid" style="display: flex; margin:2rem; justify-content:space-between;">
+            <button v-show="cart.length" @click="changeToCartPage" style="border: none;">
+                <div class="text-center m-2" style="width: 10rem">
+                    <p style="font-size: larger;">Cart</p>
+                     <span>{{(cart?.length)}} items</span>
+                </div>
+            </button>
+
+            <button class="btn btn-outline-primary" @click="changeToCheckoutPage" v-show="cart.length">
+                Checkout <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            </button>
+        </div>
+
+
+        <!-- Lesson View -->
+        <section  v-show="!cartPage && !checkoutPage" class="container lessons" v-for="lesson in lessons" :key="lesson.id">
+           <div class="card m-1 p-1">
+                <div class="card-body" style="display: flex;">
+                    <div>
+                        <h5 class="card-title text-left">
+                            {{lesson.subject}}
+                        </h5>
+                        <h6 class="card-subtitle text-left">
+                            {{lesson.location}}
+                        </h6>
+                        <p class="card-text">
+                            &#163;{{lesson.price}}
+                        </p>
+                        <p class="card-text">
+                            Spaces: {{lesson.spaces}}
+                            <p v-show="lesson.spaces <= 0" style="color: red;">
+                                No more available space
+                            </p>
+                        </p>
+                        <button class="btn btn-outline-primary" @click="addToCart(lesson)" :disabled="lesson.spaces <= 0">
+                            Add to cart
+                        </button>
+                    </div>
+                    <div style=" margin-left: 3rem; font-size: 3rem; color:blue;">
+                        <i :class="lesson.icon" aria-hidden="true"></i>
+                    </div>
+                </div>
+           </div>
+        </section>
+
+
+        <!-- Cart Page -->
+        <section v-show="cartPage">
+            <h1>
+                This is the cart Page
+            </h1>
+            <div v-for="(lesson, index) in cart" :key="index">
+                <div class="card m-1 p-1">
+                    <div class="card-body" style="display: flex;">
+                        <div>
+                            <h5 class="card-title text-left">
+                                {{lesson.subject}}
+                            </h5>
+                            <h6 class="card-subtitle text-left">
+                                {{lesson.location}}
+                            </h6>
+                            <p class="card-text">
+                                &#163;{{lesson.price}}
+                            </p>
+                            <p class="card-text">
+                                Spaces: {{lesson.spaces}}
+                            </p>
+                            <button class="btn btn-outline-danger" @click="removeFromCart(lesson)">
+                                Remove from cart
+                            </button>
+                        </div>
+                        <div style=" margin-left: 3rem; font-size: 3rem; color:blue;">
+                            <i :class="lesson.icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+               </div>
+            </div>
+        </section>
+
+        <!-- Checkout Page -->
+        <section v-show="checkoutPage">
+            <h1>
+                This is the checkout page
+            </h1>
+        </section>
+
+    </div>
+
+
+    <!-- Importing the App -->
+    <script src="./main.js"></script>
+    
+    <!-- Mounting the App -->
+    <script>
+        
+        const mountedApp = app.mount('#app')
+    </script>
+
+    <style scoped>
+        .lessons {
+           width: 18rem; 
+           margin-top: 2rem;
+        }
+    </style>
+</body>
+</html>
