@@ -23,20 +23,52 @@
         <h1>Book Available Lessons</h1>
         
         
-        
-        <div class="container-fluid" style="display: flex; margin:2rem; justify-content:space-between;">
-            <button v-show="cart.length" @click="changeToCartPage" style="border: none;">
+        <!-- Checkout Button View -->
+        <div class="container-fluid" style="display: flex; margin:0rem; padding-bottom:2rem; justify-content:space-between;">
+            <button  class="btn btn-outline-primary" v-show="cart.length" @click="changeToCartPage">
                 <div class="text-center m-2" style="width: 10rem">
-                    <p style="font-size: larger;">Cart</p>
+                    <p style="font-size: larger;">Checkout <i class="fa fa-shopping-cart" aria-hidden="true"></i></p>
                      <span>{{(cart?.length)}} items</span>
                 </div>
             </button>
 
-            <button class="btn btn-outline-primary" @click="changeToCheckoutPage" v-show="cart.length">
-                Checkout <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            <button class="btn btn-lg" @click="changeToCheckoutPage" v-show="cart.length">
+                <p>
+                    Cart
+                </p>
             </button>
         </div>
 
+        <!-- Sorting -->
+        <div class="p-2">
+            <div class="d-flex">
+                <h2 class="px-1">
+                    Sort <i class="fa fa-sort" aria-hidden="true"></i>
+                </h2>
+            </div>
+            <div class="d-flex justify-content-center m-2">
+                <button class="btn btn-outline-primary m-1" @click="sortSubjects">
+                    Subject
+                </button>
+                <button class="btn btn-outline-primary m-1" @click="sortLocations">
+                    Location
+                </button>
+                <button class="btn btn-outline-primary m-1" @click="sortPrices">
+                    Price
+                </button>
+                <button class="btn btn-outline-primary m-1" @click="sortSpaces">
+                    Spaces
+                </button>
+            </div> 
+            <div class="d-flex justify-content-center m-2">
+                <button class="m-1 btn" @click="changeToAscending" :class="{active: activeBtn === 'asc' }">
+                    <p>Ascending</p>
+                </button>
+                <button class="m-1 btn" @click="changeToDescending" :class="{active: activeBtn === 'dsc' }">
+                    <p>Descending</p>
+                </button>
+            </div>
+        </div>
 
         <!-- Lesson View -->
         <section  v-show="!cartPage && !checkoutPage" class="container lessons" v-for="lesson in lessons" :key="lesson.id">
@@ -95,13 +127,14 @@
                                 Remove from cart
                             </button>
                         </div>
-                        <div style=" margin-left: 3rem; font-size: 3rem; color:blue;">
+                        <div style="margin-left: 3rem; font-size: 3rem; color:blue;">
                             <i :class="lesson.icon" aria-hidden="true"></i>
                         </div>
                     </div>
                </div>
             </div>
         </section>
+
 
         <!-- Checkout Page -->
         <section v-show="checkoutPage">
