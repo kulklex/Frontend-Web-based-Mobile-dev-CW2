@@ -4,11 +4,14 @@ const app = Vue.createApp({
     data() {
         return {
             cartPage: false,
-            checkoutPage: false,
             ascending: true,
             descending: false,
             activeBtn: "",
             cart: [],
+            checkout: {
+                name: "",
+                phoneNumber: ""
+            },
             lessons: [
                 {
                     "id": 1,
@@ -202,7 +205,9 @@ const app = Vue.createApp({
                     "spaces": 5,
                     "icon": "fa fa-briefcase"
                 }
-            ]
+            ],
+            searchInput: "",
+            filteredLessons: []
         }
     },
     methods: {
@@ -213,28 +218,20 @@ const app = Vue.createApp({
             } else {
                 this.cart.push(lesson)
             }
-            console.log(this.ascending, this.descending)
         },
         removeFromCart(lesson) {
             this.cart.splice(this.cart.indexOf(lesson), 1)
             ++lesson.spaces
             if(!this.cart.length || this.cart.length === 0) {
-                this.checkoutPage = false;
                 this.cartPage = false;
             }
         },
         clearCart() {
             this.cart = [];
-            this.checkoutPage = false;
             this.cartPage = false;
         },
         changeToCartPage() {
             this.cartPage = !this.cartPage;
-            this.checkoutPage = false;
-        },
-        changeToCheckoutPage() {
-            this.checkoutPage = !this.checkoutPage;
-            this.cartPage = false;
         },
         changeToAscending() {
             this.descending = false;
@@ -334,5 +331,32 @@ const app = Vue.createApp({
                 })
             }
         },
+        isLetters($event, name) {
+            let letter = name.fromcharcode($event.keycode)
+            if (/^[A-Za-z]+$/.test(letter)) return true
+            else $event.preventDefault();
+        },
+        isNumbers($event) {
+            var charCode = $event.keyCode;
+            if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
+                $event.preventDefault();;
+            } else {
+                return true;
+            }
+        },
+        checkedOut() {
+            alert('You have successfully checked out!')
+        },
+        searchText(search) {
+            console.log(search)
+            const regex = new RegExp(search, 'i')
+            let filteredLessons = this.lessons
+            console.log(filteredLessons)
+            filteredLessons = filteredLessons.filter((lesson) => 
+                regex.test(lesson.subject) || regex.test(lesson.location)
+            )
+            console.log(filteredLessons)
+            return filteredLessons
+        }
     },
 })

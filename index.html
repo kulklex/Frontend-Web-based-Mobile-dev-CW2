@@ -23,28 +23,32 @@
         <h1>Book Available Lessons</h1>
         
         
-        <!-- Checkout Button View -->
-        <div class="container-fluid" style="display: flex; margin:0rem; padding-bottom:2rem; justify-content:space-between;">
+        <!-- Cart Button -->
+        <div class="container-fluid m-2">
             <button  class="btn btn-outline-primary" v-show="cart.length" @click="changeToCartPage">
                 <div class="text-center m-2" style="width: 10rem">
-                    <p style="font-size: larger;">Checkout <i class="fa fa-shopping-cart" aria-hidden="true"></i></p>
+                    <p style="font-size: larger;">Cart <i class="fa fa-shopping-cart" aria-hidden="true"></i></p>
                      <span>{{(cart?.length)}} items</span>
                 </div>
             </button>
-
-            <button class="btn btn-lg" @click="changeToCheckoutPage" v-show="cart.length">
-                <p>
-                    Cart
-                </p>
-            </button>
         </div>
 
-        <!-- Sorting -->
+        <!-- Lessons Page -->
+        <div v-show="!cartPage" >
+
+        <!-- Search -->
+        <div>
+            <form class="container">
+                <input type="text" placeholder="search" v-model="searchInput" @keyup="searchText(searchInput)">
+            </form>
+        </div>
+
+        <!-- Sorting starts-->
         <div class="p-2">
-            <div class="d-flex">
-                <h2 class="px-1">
+            <div class="d-flex justify-content-center m-2">
+                <button class="px-1 border-0">
                     Sort <i class="fa fa-sort" aria-hidden="true"></i>
-                </h2>
+                </button>
             </div>
             <div class="d-flex justify-content-center m-2">
                 <button class="btn btn-outline-primary m-1" @click="sortSubjects">
@@ -61,18 +65,20 @@
                 </button>
             </div> 
             <div class="d-flex justify-content-center m-2">
-                <button class="m-1 btn" @click="changeToAscending" :class="{active: activeBtn === 'asc' }">
+                <button class="m-1 btn" @click="changeToAscending" :class="{'btn-primary': activeBtn === 'asc'}">
                     <p>Ascending</p>
                 </button>
-                <button class="m-1 btn" @click="changeToDescending" :class="{active: activeBtn === 'dsc' }">
+                <button class="m-1 btn" @click="changeToDescending" :class="{'btn-primary': activeBtn === 'dsc'}">
                     <p>Descending</p>
                 </button>
             </div>
         </div>
+        <!-- Sorting ends-->
+
 
         <!-- Lesson View -->
-        <section  v-show="!cartPage && !checkoutPage" class="container lessons" v-for="lesson in lessons" :key="lesson.id">
-           <div class="card m-1 p-1">
+        <section class="container lessons" v-for="lesson in lessons" :key="lesson.id">
+            <div class="card m-1 p-1">
                 <div class="card-body" style="display: flex;">
                     <div>
                         <h5 class="card-title text-left">
@@ -100,14 +106,20 @@
                 </div>
            </div>
         </section>
+        <!-- Lesson View ends -->
+        </div>
 
 
         <!-- Cart Page -->
-        <section v-show="cartPage">
-            <h1>
-                This is the cart Page
-            </h1>
-            <div v-for="(lesson, index) in cart" :key="index">
+        <section v-show="cartPage" class="mt-4 pb-4">
+            <div class="d-flex justify-content-center align-content-center">
+                <h1>
+                    This is the cart Page
+                </h1>
+            </div>
+
+
+            <div v-for="(lesson, index) in cart" :key="index" class="mx-4">
                 <div class="card m-1 p-1">
                     <div class="card-body" style="display: flex;">
                         <div>
@@ -133,18 +145,29 @@
                     </div>
                </div>
             </div>
-        </section>
 
-
-        <!-- Checkout Page -->
-        <section v-show="checkoutPage">
-            <h1>
-                This is the checkout page
-            </h1>
+            <form class="m-4">
+                <div class="form-group m-4">
+                  <label for="name">Name</label>
+                  <input type="text" v-model="checkout.name" class="form-control" id="name"  @keypress="isLetters($event, checkout.name)" placeholder="Enter name">
+                </div>
+                <div class="form-group m-4">
+                  <label for="phoneNumber">Phone Number</label>
+                  <input type="text" v-model="checkout.phoneNumber" class="form-control" id="phoneNumber" @keypress="isNumbers($event)" placeholder="Phone Number">
+                </div>
+                <button @click="checkedOut" :disabled="checkout.name == '' || checkout.phoneNumber == '' ">
+                    Checkout
+                </button>
+              </form>     
+              
+              
+              <p>{{checkout.name}} {{checkout.phoneNumber}}</p>
         </section>
 
     </div>
 
+
+    
 
     <!-- Importing the App -->
     <script src="./main.js"></script>
@@ -159,7 +182,7 @@
         .lessons {
            width: 18rem; 
            margin-top: 2rem;
-        }
+        };
     </style>
 </body>
 </html>
