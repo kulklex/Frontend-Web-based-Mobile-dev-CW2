@@ -331,15 +331,18 @@ const app = Vue.createApp({
                 })
             }
         },
-        isLetters($event, name) {
-            let letter = name.fromcharcode($event.keycode)
-            if (/^[A-Za-z]+$/.test(letter)) return true
-            else $event.preventDefault();
+        isLetters($event) {
+            var charCode = $event.keyCode;
+            if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
+                return true;
+            } else {
+                $event.preventDefault();
+            }      
         },
         isNumbers($event) {
             var charCode = $event.keyCode;
             if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
-                $event.preventDefault();;
+                $event.preventDefault();
             } else {
                 return true;
             }

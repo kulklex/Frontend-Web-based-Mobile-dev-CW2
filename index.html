@@ -149,7 +149,7 @@
             <form class="m-4">
                 <div class="form-group m-4">
                   <label for="name">Name</label>
-                  <input type="text" v-model="checkout.name" class="form-control" id="name"  @keypress="isLetters($event, checkout.name)" placeholder="Enter name">
+                  <input type="text" v-model="checkout.name" class="form-control" id="name"  @keypress="isLetters($event)" placeholder="Enter name">
                 </div>
                 <div class="form-group m-4">
                   <label for="phoneNumber">Phone Number</label>
@@ -159,9 +159,6 @@
                     Checkout
                 </button>
               </form>     
-              
-              
-              <p>{{checkout.name}} {{checkout.phoneNumber}}</p>
         </section>
 
     </div>
