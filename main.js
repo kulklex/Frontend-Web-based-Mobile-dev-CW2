@@ -333,7 +333,7 @@ const app = Vue.createApp({
         },
         isLetters($event) {
             var charCode = $event.keyCode;
-            if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
+            if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 8) {
                 return true;
             } else {
                 $event.preventDefault();
@@ -354,12 +354,10 @@ const app = Vue.createApp({
             console.log(search)
             const regex = new RegExp(search, 'i')
             let filteredLessons = this.lessons
-            console.log(filteredLessons)
-            filteredLessons = filteredLessons.filter((lesson) => 
+            filteredLessons = this.lessons.filter((lesson) => 
                 regex.test(lesson.subject) || regex.test(lesson.location)
             )
-            console.log(filteredLessons)
-            return filteredLessons
+            return this.lessons = filteredLessons
         }
     },
 })
