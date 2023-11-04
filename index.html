@@ -19,12 +19,14 @@
 
 </head>
 <body>
-    <div id="app" class="container-fluid">
-        <h1>Book Available Lessons</h1>
+    <div id="app" class="container">
+        <h1 class="d-flex justify-content-center pt-4 pb-2">
+            Book Available Lessons
+        </h1>
         
         
         <!-- Cart Button -->
-        <div class="container-fluid m-2">
+        <div class="container-fluid m-4">
             <button  class="btn btn-outline-primary" v-show="cart.length" @click="changeToCartPage">
                 <div class="text-center m-2" style="width: 10rem">
                     <p style="font-size: larger;">Cart <i class="fa fa-shopping-cart" aria-hidden="true"></i></p>
@@ -34,22 +36,18 @@
         </div>
 
         <!-- Lessons Page -->
-        <div v-show="!cartPage" >
+    <div v-show="!cartPage" >
 
         <!-- Search -->
-        <div>
-            <form class="container">
+        <div class="d-flex justify-content-center">
+            <form>
                 <input type="text" placeholder="search" v-model="searchInput" @keyup="searchText(searchInput)">
             </form>
         </div>
+        <!-- Search -->
 
         <!-- Sorting starts-->
         <div class="p-2">
-            <div class="d-flex justify-content-center m-2">
-                <button class="px-1 border-0">
-                    Sort <i class="fa fa-sort" aria-hidden="true"></i>
-                </button>
-            </div>
             <div class="d-flex justify-content-center m-2">
                 <button class="btn btn-outline-primary m-1" @click="sortSubjects">
                     Subject
@@ -77,9 +75,9 @@
 
 
         <!-- Lesson View -->
-        <section class="container lessons" v-for="lesson in lessons" :key="lesson.id">
-            <div class="card m-1 p-1">
-                <div class="card-body" style="display: flex;">
+        <section class="container">
+            <div class="mx-2 px-4 row justify-content-center">
+                <div class="border col-3 d-flex m-4 p-4" v-for="lesson in lessons" :key="lesson.id">
                     <div>
                         <h5 class="card-title text-left">
                             {{lesson.subject}}
@@ -107,7 +105,7 @@
            </div>
         </section>
         <!-- Lesson View ends -->
-        </div>
+    </div>
 
 
         <!-- Cart Page -->
@@ -176,10 +174,7 @@
     </script>
 
     <style scoped>
-        .lessons {
-           width: 18rem; 
-           margin-top: 2rem;
-        };
+        
     </style>
 </body>
 </html>
