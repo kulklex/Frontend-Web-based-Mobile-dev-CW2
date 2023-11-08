@@ -154,17 +154,17 @@ const app = Vue.createApp({
         },
         checkedOut() {
             alert('You have successfully checked out!')
-        },
-        searchText(search) {
-            console.log(search)
-            if(search) {
-                const regex = new RegExp(search, 'i')
-                let filteredLessons = this.lessons
-                filteredLessons = this.lessons.filter((lesson) => 
-                    regex.test(lesson.subject) || regex.test(lesson.location)
-                )
-                return this.lessons = filteredLessons
-            }
         }
     },
+    computed: {
+        filteredLessons() {
+            let filteredLessons = this.lessons
+            if(this.searchInput.length > 0) {
+                filteredLessons = this.lessons.filter((lesson) => {
+                    return lesson.subject.toUpperCase().includes(this.searchInput.toUpperCase()) || lesson.location.toUpperCase().includes(this.searchInput.toUpperCase())
+                })
+            }
+            return filteredLessons
+        }
+    }
 })
