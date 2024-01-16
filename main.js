@@ -11,11 +11,22 @@ const app = Vue.createApp({
                 name: "",
                 phoneNumber: ""
             },
-            lessons: lessons,
+            lessons: [],
             searchInput: "",
         }
     },
     methods: {
+        async fetchLessons() {
+            try {
+                const response = await fetch('https://vuejs-backend-0omy.onrender.com/lessons');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch lessons');
+                }
+                this.lessons = await response.json();
+            } catch (error) {
+                console.error(error);
+            }
+        },
         addToCart(lesson) {
             lesson.spaces -= 1
             if(lesson.spaces < 0) {
@@ -155,6 +166,10 @@ const app = Vue.createApp({
         checkedOut() {
             alert('You have successfully checked out!')
         }
+    },
+    mounted() {
+        // Fetch lessons when the app is mounted
+        this.fetchLessons();
     },
     computed: {
         filteredLessons() {
