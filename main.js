@@ -18,7 +18,7 @@ const app = Vue.createApp({
     methods: {
         async fetchLessons() {
             try {
-                const response = await fetch('https://vuejs-backend-0omy.onrender.com/lessons');
+                const response = await fetch('https://web-based-mobile-dev-cw2.onrender.com/lessons');
                 if (!response.ok) {
                     throw new Error('Failed to fetch lessons');
                 }
@@ -27,13 +27,33 @@ const app = Vue.createApp({
                 console.error(error);
             }
         },
-        addToCart(lesson) {
-            lesson.spaces -= 1
-            if(lesson.spaces < 0) {
-                lesson.spaces = 0;
-            } else {
-                this.cart.push(lesson)
+        async updateLessonSpaces(lessonId, newSpaces) {
+            try {
+                const response = await fetch(`https://web-based-mobile-dev-cw2.onrender.com/lessons/${lessonId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify([{ _id: lessonId, spaces: newSpaces }]),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                return await response.json();
+            } catch (error) {
+                console.error(error);
+                throw new Error('Failed to update lesson spaces');
             }
+        },
+        addToCart(lesson) {
+            this.updateLessonSpaces(lesson._id, lesson.spaces - 1)
+            .then(() => {
+                lesson.spaces--;
+                if (lesson.spaces >= 0) {
+                    this.cart.push(lesson);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
         },
         removeFromCart(lesson) {
             this.cart.splice(this.cart.indexOf(lesson), 1)
