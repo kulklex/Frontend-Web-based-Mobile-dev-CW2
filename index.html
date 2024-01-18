@@ -144,7 +144,10 @@
                </div>
             </div>
 
-            <form class="m-4">
+            <form class="m-4" @submit.prevent="createOrder">
+                <div class="form-group">
+                    <h2>Create an order</h2>
+                </div>
                 <div class="form-group m-4">
                   <label for="name">Name</label>
                   <input type="text" v-model="checkout.name" class="form-control" id="name"  @keypress="isLetters($event)" placeholder="Enter name">
@@ -153,8 +156,8 @@
                   <label for="phoneNumber">Phone Number</label>
                   <input type="text" v-model="checkout.phoneNumber" class="form-control" id="phoneNumber" @keypress="isNumbers($event)" placeholder="Phone Number">
                 </div>
-                <button @click="checkedOut" :disabled="checkout.name == '' || checkout.phoneNumber == '' ">
-                    Checkout
+                <button type="submit" :disabled="checkout.name == '' || checkout.phoneNumber == '' ">
+                    Create Order
                 </button>
               </form>     
         </section>

@@ -9,7 +9,9 @@ const app = Vue.createApp({
             cart: [],
             checkout: {
                 name: "",
-                phoneNumber: ""
+                phoneNumber: "",
+                lessonId: null,
+                numOfSpaces: 0
             },
             lessons: [],
             searchInput: "",
@@ -43,7 +45,8 @@ const app = Vue.createApp({
                 throw new Error('Failed to update lesson spaces');
             }
         },
-        addToCart(lesson) {
+        
+        async addToCart(lesson) {
             this.updateLessonSpaces(lesson._id, lesson.spaces - 1)
             .then(() => {
                 lesson.spaces--;
@@ -55,11 +58,49 @@ const app = Vue.createApp({
                 console.error(error);
             });
         },
-        removeFromCart(lesson) {
-            this.cart.splice(this.cart.indexOf(lesson), 1)
-            ++lesson.spaces
-            if(!this.cart.length || this.cart.length === 0) {
-                this.cartPage = false;
+        async removeFromCart(lesson) {
+            try {
+                // Increase the spaces for the lesson
+                await this.updateLessonSpaces(lesson._id, lesson.spaces + 1);
+
+                // Remove the lesson from the cart
+                const lessonIndex = this.cart.findIndex(cartLesson => cartLesson._id === lesson._id);
+                if (lessonIndex !== -1) {
+                    this.cart.splice(lessonIndex, 1);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async createOrder() {
+            try {
+                // Extracting lesson IDs from the lessons in the cart
+                const lessonArray = this.cart.map(lesson => lesson.id);
+
+                // Creating the order object
+                const order = {
+                    name: this.checkout.name,
+                    phoneNumber: this.checkout.phoneNumber,
+                    lessonIDs: this.cart.map(lesson => lesson.id),
+                    numOfSpaces: this.cart.map(lesson => lesson.spaces),
+                };
+
+                // Sending a POST request to create a new order
+                const response = await fetch('https://web-based-mobile-dev-cw2.onrender.com/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(order),
+                });
+
+                const result = await response.json();
+                this.message = result.msg;
+                alert('You have successfully checked out!')
+                window.location.href = '/'
+            } catch (error) {
+                console.error(error);
+                this.message = 'Error creating order';
             }
         },
         clearCart() {
@@ -183,8 +224,17 @@ const app = Vue.createApp({
                 return true;
             }
         },
-        checkedOut() {
-            alert('You have successfully checked out!')
+        checkedOut(lesson) {
+            this.updateLessonSpaces(lesson._id, lesson.spaces - 1)
+            .then(() => {
+                lesson.spaces--;
+                if (lesson.spaces >= 0) {
+                    this.cart.push(lesson);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
         }
     },
     mounted() {
