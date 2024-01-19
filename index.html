@@ -42,7 +42,7 @@
         <!-- Search -->
         <div class="d-flex justify-content-center">
             <form>
-                <input type="text" placeholder="search" v-model="searchInput">
+                <input type="text" placeholder="search" @input="searchLessons" v-model="searchInput">
             </form>
         </div>
         <!-- Search ends-->
@@ -78,7 +78,7 @@
         <!-- Lesson View -->
         <section class="container">
             <div class="mx-2 px-4 row justify-content-center">
-                <div class="border col-3 d-flex m-4 p-4" v-for="lesson in filteredLessons" :key="lesson.id">
+                <div class="border col-3 d-flex m-4 p-4" v-for="lesson in lessons" :key="lesson.id">
                     <div>
                         <h5 class="card-title text-left">
                             {{lesson.subject}}

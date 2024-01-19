@@ -74,9 +74,6 @@ const app = Vue.createApp({
         },
         async createOrder() {
             try {
-                // Extracting lesson IDs from the lessons in the cart
-                const lessonArray = this.cart.map(lesson => lesson.id);
-
                 // Creating the order object
                 const order = {
                     name: this.checkout.name,
@@ -101,6 +98,15 @@ const app = Vue.createApp({
             } catch (error) {
                 console.error(error);
                 this.message = 'Error creating order';
+            }
+        },
+        async searchLessons() {
+            try {
+                // Sending request for fetching lessons based on the searchInput value
+                const response = await fetch(`https://web-based-mobile-dev-cw2.onrender.com/lessons/search?filter=${this.searchInput}`);
+                this.lessons = await response.json();
+            } catch (error) {
+                console.error(error);
             }
         },
         clearCart() {
@@ -223,33 +229,17 @@ const app = Vue.createApp({
             } else {
                 return true;
             }
-        },
-        checkedOut(lesson) {
-            this.updateLessonSpaces(lesson._id, lesson.spaces - 1)
-            .then(() => {
-                lesson.spaces--;
-                if (lesson.spaces >= 0) {
-                    this.cart.push(lesson);
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
         }
     },
     mounted() {
         // Fetch lessons when the app is mounted
         this.fetchLessons();
     },
-    computed: {
-        filteredLessons() {
-            let filteredLessons = this.lessons
-            if(this.searchInput.length > 0) {
-                filteredLessons = this.lessons.filter((lesson) => {
-                    return lesson.subject.toUpperCase().includes(this.searchInput.toUpperCase()) || lesson.location.toUpperCase().includes(this.searchInput.toUpperCase())
-                })
-            }
-            return filteredLessons
-        }
+    // Watch for changes in the 'searchInput' data property
+    watch: {
+        // When 'searchInput' changes, call the searchLessons method
+        searchInput: function () {
+            this.searchLessons();
+        },
     }
 })
