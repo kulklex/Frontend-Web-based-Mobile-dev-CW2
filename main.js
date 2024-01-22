@@ -20,7 +20,7 @@ const app = Vue.createApp({
     methods: {
         async fetchLessons() {
             try {
-                const response = await fetch('https://web-based-mobile-dev-cw2.onrender.com/lessons');
+                const response = await fetch('http://courseworkvuejs-env.eba-igkjeup4.eu-west-2.elasticbeanstalk.com/lessons');
                 if (!response.ok) {
                     throw new Error('Failed to fetch lessons');
                 }
@@ -31,7 +31,7 @@ const app = Vue.createApp({
         },
         async updateLessonSpaces(lessonId, newSpaces) {
             try {
-                const response = await fetch(`https://web-based-mobile-dev-cw2.onrender.com/lessons/${lessonId}`, {
+                const response = await fetch(`http://courseworkvuejs-env.eba-igkjeup4.eu-west-2.elasticbeanstalk.com/lessons/${lessonId}`, {
                     method: 'PUT',
                     body: JSON.stringify([{ _id: lessonId, spaces: newSpaces }]),
                     headers: {
@@ -83,7 +83,7 @@ const app = Vue.createApp({
                 };
 
                 // Sending a POST request to create a new order
-                const response = await fetch('https://web-based-mobile-dev-cw2.onrender.com/orders', {
+                const response = await fetch('http://courseworkvuejs-env.eba-igkjeup4.eu-west-2.elasticbeanstalk.com/orders', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ const app = Vue.createApp({
         async searchLessons() {
             try {
                 // Sending request for fetching lessons based on the searchInput value
-                const response = await fetch(`https://web-based-mobile-dev-cw2.onrender.com/lessons/search?filter=${this.searchInput}`);
+                const response = await fetch(`http://courseworkvuejs-env.eba-igkjeup4.eu-west-2.elasticbeanstalk.com/lessons/search?filter=${this.searchInput}`);
                 this.lessons = await response.json();
             } catch (error) {
                 console.error(error);
