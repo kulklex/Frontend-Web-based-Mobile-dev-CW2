@@ -94,7 +94,7 @@ const app = Vue.createApp({
                 const result = await response.json();
                 this.message = result.msg;
                 alert('You have successfully checked out!')
-                window.location.href = '/'
+                window.location.href = 'https://kulklex.github.io/Frontend-Web-based-Mobile-dev-CW2/'
             } catch (error) {
                 console.error(error);
                 this.message = 'Error creating order';
