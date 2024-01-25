@@ -1,2 +1,2 @@
-Github Repository - https://github.com/kulklex/Vue-CW1/
-Github Pages - https://kulklex.github.io/Vue-CW1/
+Github Repository - https://github.com/kulklex/Frontend-Web-based-Mobile-dev-CW2
+Github Pages - https://kulklex.github.io/Frontend-Web-based-Mobile-dev-CW2/
